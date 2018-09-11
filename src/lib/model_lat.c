@@ -19,6 +19,7 @@ Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #include "topology.h"
 #include "model.h"
 #include "monotonic_timer.h"
+#include <math.h>
 
 /**
  * \file
@@ -212,7 +213,7 @@ void create_latency_epoch()
 
     // this is the generic hardware latency for this thread (it takes into account the current virtual node latencies)
     hw_latency = thread->virtual_node->nvram_node->latency;
-    target_latency = latency_model.read_latency;
+    target_latency = sqrt(latency_model.read_latency*latency_model.write_latency);
 
     // check if the thread_self is remote (virtual topology where dram != nvram) or local (dram == nvram)
     // on this case, stall cycles will be a proportion of remote memory accesses
